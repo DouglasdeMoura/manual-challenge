@@ -1,10 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { Form } from ".";
 
 const meta = {
   title: "Components/Form",
   component: Form,
+  decorators: [
+    (Story) => (
+      <NuqsAdapter>
+        <Story />
+      </NuqsAdapter>
+    ),
+  ],
 } satisfies Meta<typeof Form>;
 
 export default meta;
