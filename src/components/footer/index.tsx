@@ -45,7 +45,7 @@ export function Footer({ menus, social }: FooterProps) {
                 </div>
               ))}
             </div>
-            <div>
+            <div className="min-w-[175px]">
               <h3 className="font-bold text-[10px] leading-[15px] uppercase mb-[20px]">
                 Follow us
               </h3>
