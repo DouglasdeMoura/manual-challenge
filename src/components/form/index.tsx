@@ -106,7 +106,7 @@ export function Form({
               console.log(formData);
               setSuccess(true);
             }}
-            className="container mx-auto flex flex-col items-center justify-center h-dvh w-dvh p-4"
+            className="mx-auto max-w-screen-md"
           >
             {questions?.map((question, index) => (
               <div key={question.question} hidden={questionIndex !== index}>
