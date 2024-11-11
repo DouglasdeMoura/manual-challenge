@@ -11,3 +11,11 @@ body {
     --radius: 0.5rem;
   }
 }
+
+.form a {
+  @apply underline text-manual-teal;
+}
+
+.form a:hover {
+  @apply no-underline text-manual-teal/80;
+}

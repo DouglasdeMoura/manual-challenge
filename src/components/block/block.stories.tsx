@@ -4,6 +4,7 @@ import bg from "../../../public/assets/BG.png";
 import { Block } from ".";
 import { Button } from "../button";
 import Image from "next/image";
+import { COMPONENT_ID } from "../form/form.constants";
 
 const meta = {
   title: "Components/Block",
@@ -18,7 +19,11 @@ export const Hero: Story = {
     title: "Be good to yourself",
     description:
       "We’re working around the clock to bring you a holistic approach to your wellness. From top to bottom, inside and out.",
-    callToAction: <Button>Learn more</Button>,
+    callToAction: (
+      <Button asChild>
+        <a href={`#${COMPONENT_ID}`}>Learn more</a>
+      </Button>
+    ),
     image: <Image src={bg} alt="man" fill style={{ objectFit: "contain" }} />,
   },
 };
