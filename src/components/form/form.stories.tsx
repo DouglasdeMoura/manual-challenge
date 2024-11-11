@@ -2,13 +2,23 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { Form } from ".";
+import { COMPONENT_ID } from "./form.constants";
+
+// TODO: there is some work to be done to enable testing inside Storybook.
+// Maybe, refactor it to be more react-ish and less imperative.
 
 const meta = {
   title: "Components/Form",
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+    },
+  },
   component: Form,
   decorators: [
     (Story) => (
       <NuqsAdapter>
+        <a href={`#${COMPONENT_ID}`}>Open form</a>
         <Story />
       </NuqsAdapter>
     ),
