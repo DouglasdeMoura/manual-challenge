@@ -6,6 +6,7 @@ import { Question, types } from "@/api/form";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { COMPONENT_ID } from "./form.constants";
 import { X } from "lucide-react";
+import { ScrollArea } from "../ui/scroll-area";
 
 const useEscapeKey = (callback: () => void) => {
   useEffect(() => {
@@ -91,7 +92,7 @@ export function Form({
         <span className="sr-only">Close</span>
         <X />
       </button>
-      <div className="container mx-auto flex flex-col items-center justify-center h-dvh w-dvh p-4">
+      <ScrollArea className="container mx-auto flex flex-col items-center justify-center h-dvh w-dvh p-4">
         {success ? (
           <p className="text-center text-xl p-8 [&a]:text-blue">
             {successMessage}
@@ -183,7 +184,7 @@ export function Form({
             ))}
           </form>
         )}
-      </div>
+      </ScrollArea>
     </div>
   );
 }
