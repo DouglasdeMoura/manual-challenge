@@ -35,7 +35,7 @@ export function Footer({ menus, social }: FooterProps) {
                       <li key={item.name} className="text-base leading-[30px]">
                         <a
                           href={item.url}
-                          className="text-base leading-[30px] block"
+                          className="text-base leading-[30px] block hover:text-manual-teal/80 transition-colors"
                         >
                           {item.name}
                         </a>
@@ -54,7 +54,7 @@ export function Footer({ menus, social }: FooterProps) {
                   <li key={item.name}>
                     <a
                       href={item.url}
-                      className="text-base leading-[30px] flex items-center gap-2 text-manual-red hover:text-manual-red/90"
+                      className="text-base leading-[30px] flex items-center gap-2 text-manual-red hover:text-manual-red/80 transition-colors"
                     >
                       {item.icon}
                       <span className="sr-only">{item.name}</span>
