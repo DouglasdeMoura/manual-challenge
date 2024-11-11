@@ -41,6 +41,7 @@ export function Form({
     global?.window?.location.hash.slice(1) === COMPONENT_ID || false
   );
   const [isRejected, setIsRejected] = useState(false);
+  const [canAdvance, setCanAdvance] = useState(false);
   const [success, setSuccess] = useState(false);
   const [questionIndex, setIndex] = useQueryState(
     "questionIndex",
@@ -52,6 +53,7 @@ export function Form({
   };
 
   const next = () => {
+    setCanAdvance(false);
     setIndex((current) => current + 1);
   };
 
@@ -60,6 +62,7 @@ export function Form({
     setOpen(false);
     setIndex(0);
     setSuccess(false);
+    setCanAdvance(false);
     window.location.hash = "";
   };
 
@@ -92,99 +95,104 @@ export function Form({
         <span className="sr-only">Close</span>
         <X />
       </button>
-      <ScrollArea className="container mx-auto flex flex-col items-center justify-center h-dvh w-dvh p-4">
-        {success ? (
-          <p className="text-center text-xl p-8 [&a]:text-blue">
-            {successMessage}
-          </p>
-        ) : (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const formData = Object.fromEntries(
-                new FormData(e.currentTarget)
-              );
-              console.log(formData);
-              setSuccess(true);
-            }}
-            className="mx-auto max-w-screen-md"
-          >
-            {questions?.map((question, index) => (
-              <div key={question.question} hidden={questionIndex !== index}>
-                <p className="text-center text-xl p-8">{question.question}</p>
-                {question.type === types.ChoiceType ? (
+      <div className="container mx-auto flex flex-col items-center justify-center h-dvh w-dvh p-4">
+        <ScrollArea>
+          {success ? (
+            <p className="text-center text-xl p-8 [&a]:text-blue">
+              {successMessage}
+            </p>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const formData = Object.fromEntries(
+                  new FormData(e.currentTarget)
+                );
+                console.log(formData);
+                setSuccess(true);
+              }}
+              className="mx-auto max-w-screen-md"
+            >
+              {questions?.map((question, index) => (
+                <div key={question.question} hidden={questionIndex !== index}>
+                  <p className="text-center text-xl p-8">{question.question}</p>
+                  {question.type === types.ChoiceType ? (
+                    <div
+                      className={`grid grid-cols-2 md:grid-cols-${question.options.length} mx-auto`}
+                    >
+                      {question.options.map((option) => (
+                        <label
+                          key={option.value.toString()}
+                          className="m-2 block cursor-pointer"
+                          onClick={() => {
+                            setCanAdvance(true);
+
+                            if (option.isRejection) {
+                              setIsRejected(true);
+                              return;
+                            }
+
+                            setIsRejected(false);
+                          }}
+                        >
+                          <input
+                            type="radio"
+                            name={question.question}
+                            value={option.value.toString()}
+                            className="peer"
+                            hidden
+                            required
+                          />
+                          <div
+                            dangerouslySetInnerHTML={{ __html: option.display }}
+                            className="ring-2 ring-manual-sage-light peer-checked:ring-manual-teal transition-all rounded p-4 text-center flex align-center justify-center"
+                          />
+                        </label>
+                      ))}
+                    </div>
+                  ) : null}
+
                   <div
-                    className={`grid grid-cols-2 md:grid-cols-${question.options.length} mx-auto`}
+                    data-is-rejected={isRejected}
+                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4 invisible data-[is-rejected=true]:visible mb-4"
+                    role="alert"
                   >
-                    {question.options.map((option) => (
-                      <label
-                        key={option.value.toString()}
-                        className="m-2 block cursor-pointer"
-                        onClick={() => {
-                          if (option.isRejection) {
-                            setIsRejected(true);
-                            return;
-                          }
-
-                          setIsRejected(false);
-                        }}
-                      >
-                        <input
-                          type="radio"
-                          name={question.question}
-                          value={option.value.toString()}
-                          className="peer"
-                          hidden
-                        />
-                        <div
-                          dangerouslySetInnerHTML={{ __html: option.display }}
-                          className="ring-2 ring-manual-sage-light peer-checked:ring-manual-teal transition-all rounded p-4 text-center flex align-center justify-center"
-                        />
-                      </label>
-                    ))}
+                    <p className="text-center">{rejectedMessage}</p>
                   </div>
-                ) : null}
 
-                <div
-                  data-is-rejected={isRejected}
-                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4 invisible data-[is-rejected=true]:visible mb-4"
-                  role="alert"
-                >
-                  <p className="text-center">{rejectedMessage}</p>
+                  <div className="flex gap-4 justify-between">
+                    <Button
+                      data-index={questionIndex}
+                      className="data-[index=0]:invisible"
+                      onClick={prev}
+                      type="button"
+                    >
+                      Previous
+                    </Button>
+                    <Button
+                      data-last={questionIndex === questions.length - 1}
+                      className="data-[last=true]:hidden"
+                      onClick={next}
+                      disabled={isRejected || !canAdvance}
+                      type="button"
+                    >
+                      Next
+                    </Button>
+                    <Button
+                      data-last={questionIndex === questions.length - 1}
+                      className="data-[last=false]:hidden"
+                      type="submit"
+                      disabled={isRejected || !canAdvance}
+                    >
+                      Next
+                    </Button>
+                  </div>
                 </div>
-
-                <div className="flex gap-4 justify-between">
-                  <Button
-                    data-index={questionIndex}
-                    className="data-[index=0]:invisible"
-                    onClick={prev}
-                    type="button"
-                  >
-                    Previous
-                  </Button>
-                  <Button
-                    data-last={questionIndex === questions.length - 1}
-                    className="data-[last=true]:hidden"
-                    onClick={next}
-                    disabled={isRejected}
-                    type="button"
-                  >
-                    Next
-                  </Button>
-                  <Button
-                    data-last={questionIndex === questions.length - 1}
-                    className="data-[last=false]:hidden"
-                    type="submit"
-                    disabled={isRejected}
-                  >
-                    Next
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </form>
-        )}
-      </ScrollArea>
+              ))}
+            </form>
+          )}
+        </ScrollArea>
+      </div>
     </div>
   );
 }
