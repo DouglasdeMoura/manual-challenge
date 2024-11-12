@@ -11,7 +11,7 @@ interface ListProps {
 export function List({ items, title }: ListProps) {
   return (
     <section className="text-manual-teal mb-[45px] md:mb-[90px]">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4">
         <h2 className="text-normal text-[40px] leading-[60px] text-pretty text-center my-[70px]">
           {title}
         </h2>
