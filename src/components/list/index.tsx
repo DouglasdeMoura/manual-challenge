@@ -10,17 +10,16 @@ interface ListProps {
 
 export function List({ items, title }: ListProps) {
   return (
-    <section className="text-manual-teal">
+    <section className="text-manual-teal mb-[45px] md:mb-[90px]">
       <div className="container mx-auto">
         <h2 className="text-normal text-[40px] leading-[60px] text-pretty text-center my-[70px]">
           {title}
         </h2>
-
         {items.map((item, index) => (
           <article
             key={item.title}
             data-direction={index % 2 === 0 ? "normal" : "reverse"}
-            className="group relative flex flex-col gap-4 mx-auto max-w-4xl md:flex-row md:data-[direction=reverse]:flex-row-reverse py-[45px] md:py-[90px]"
+            className="group relative flex flex-col gap-4 mx-auto max-w-4xl md:flex-row md:data-[direction=reverse]:flex-row-reverse md:py-[90px] mb-4"
           >
             <p className="hidden absolute w-[450px] h-[450px] m-auto left-0 right-0 top-0 bottom-0 -z-10 md:flex items-center justify-center">
               <span className="sr-only">Item</span>
